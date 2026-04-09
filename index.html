@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor Semántico | Elecciones Judiciales 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #0F172A;
+            --surface-color: #1E293B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --gold-accent: #D4AF37;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(180deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        h1 span {
+            color: var(--gold-accent);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* SECTION: Stats */
+        .stats-container {
+            max-width: 1200px;
+            margin: -3rem auto 3rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gold-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SECTION: Search & Interface */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .search-wrapper {
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        #searchInput:focus {
+            border-color: var(--gold-accent);
+        }
+
+        /* SECTION: Results Grid */
+        #resultsGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .candidate-card {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-accent);
+        }
+
+        .card-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+        }
+
+        .card-role {
+            font-size: 0.9rem;
+            color: var(--gold-accent);
+        }
+
+        .card-body {
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-body strong {
+            color: var(--text-main);
+        }
+
+        .ml-pillar {
+            display: inline-block;
+            background-color: rgba(212, 175, 55, 0.1);
+            color: var(--gold-accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .score-badge {
+            background-color: #22C55E;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* SECTION: Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .btn {
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: var(--gold-accent);
+            color: #000;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #pageInfo {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Buscador Semántico <span>Judicial 2025</span></h1>
+        <p class="subtitle">Descubre a los candidatos ideales basándote en la similitud de sus propuestas y visión judicial utilizando algoritmos de Procesamiento de Lenguaje Natural (NLP).</p>
+    </header>
+
+    <section class="stats-container">
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-number">3,369</span>
+                <span class="stat-label">Candidatos Publicados</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">881</span>
+                <span class="stat-label">Cargos a Elegir</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">33</span>
+                <span class="stat-label">Entidades</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">64</span>
+                <span class="stat-label">Candidatos SCJN</span>
+            </div>
+        </div>
+    </section>
+
+    <main class="app-container">
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Ej. 'derechos humanos', 'justicia social', 'tecnología'...">
+        </div>
+
+        <div id="resultsGrid">
+            </div>
+
+        <div class="pagination">
+            <button id="prevBtn" class="btn" disabled>Anterior</button>
+            <span id="pageInfo">Página 1</span>
+            <button id="nextBtn" class="btn">Siguiente</button>
+        </div>
+    </main>
+
+    <script>
+        let allCandidates = [];
+        let filteredCandidates = [];
+        const itemsPerPage = 8; // Configurado a 8 como dice en el README
+        let currentPage = 1;
+
+        // Elementos del DOM
+        const grid = document.getElementById('resultsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageInfo = document.getElementById('pageInfo');
+
+        // 1. Cargar los datos JSON generados por Python
+        async function loadData() {
+            try {
+                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Cargando modelo NLP...</p>';
+                const response = await fetch('candidates_data.json');
+                const data = await response.json();
+                
+                allCandidates = data.candidates;
+                filteredCandidates = [...allCandidates]; // Inicialmente mostrar todos
+                
+                renderPage();
+            } catch (error) {
+                console.error("Error cargando los datos:", error);
+                grid.innerHTML = '<p style="color:red; text-align:center; grid-column: 1/-1;">Error al cargar candidates_data.json. Asegúrate de ejecutar el script de Python primero.</p>';
+            }
+        }
+
+        // 2. Motor de Búsqueda Semántica (Filtro)
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            currentPage = 1; // Resetear a la primera página al buscar
+            
+            if (term === '') {
+                filteredCandidates = [...allCandidates];
+            } else {
+                filteredCandidates = allCandidates.filter(c => {
+                    // Buscar coincidencias en múltiples campos (Simulación de búsqueda semántica)
+                    const searchString = `${c.name} ${c.vision} ${c.propuesta} ${c.pillar}`.toLowerCase();
+                    return searchString.includes(term);
+                });
+            }
+            renderPage();
+        });
+
+        // 3. Renderizar las Tarjetas (DOM Injection)
+        function renderPage() {
+            grid.innerHTML = ''; // Limpiar grid
+
+            if (filteredCandidates.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: var(--text-muted);">No se encontraron candidatos afines a tu búsqueda.</p>';
+                updatePagination();
+                return;
+            }
+
+            // Calcular índices de paginación
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = filteredCandidates.slice(startIndex, endIndex);
+
+            pageItems.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'candidate-card';
+                
+                // Truncar textos muy largos
+                const shortVision = c.vision ? (c.vision.substring(0, 100) + '...') : 'Sin visión registrada.';
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-name">${c.name}</div>
+                        <div class="card-role">${c.role}</div>
+                    </div>
+                    <span class="ml-pillar">⚖️ ${c.pillar}</span>
+                    <div class="card-body">
+                        <strong>Visión:</strong> ${shortVision}
+                    </div>
+                    <div class="card-footer">
+                        <span>📍 ${c.state || 'Nacional'}</span>
+                        <span class="score-badge">Puntaje: ${c.score}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            updatePagination();
+        }
+
+        // 4. Controles de Paginación
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
+            
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages || 1}`;
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage();
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage();
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+            }
+        });
+
+        // Inicializar la aplicación
+        loadData();
+
+    </script>
+</body>
+</html>
