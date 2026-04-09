@@ -1,436 +1,1127 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elecciones Judiciales 2025 — Buscador Semántico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
-    
-    <style>
-        /* TUS VARIABLES DE COLOR ORIGINALES */
-        :root {
-            --gold: #C9A84C;
-            --gold-dim: #8a6f30;
-            --ink: #0b0b0f;
-            --ink2: #141418;
-            --ink3: #1e1e25;
-            --cream: #f5f0e8;
-            --cream-dim: #b8b0a0;
-            --red-mx: #c41e22;
-            --green-mx: #006847;
-            --accent: #e8d5a3;
-            --text: #e8e4dc;
-            --muted: #7a7870;
-            --border: rgba(201, 168, 76, 0.2);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elecciones Judiciales 2025 — México</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        *, *::before, *::after { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-        }
+  :root {
+    --gold: #C9A84C;
+    --gold-dim: #8a6f30;
+    --ink: #0b0b0f;
+    --ink2: #141418;
+    --ink3: #1e1e25;
+    --cream: #f5f0e8;
+    --cream-dim: #b8b0a0;
+    --red-mx: #c41e22;
+    --green-mx: #006847;
+    --accent: #e8d5a3;
+    --text: #e8e4dc;
+    --muted: #7a7870;
+    --border: rgba(201,168,76,0.2);
+  }
 
-        body {
-            background-color: var(--ink);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            line-height: 1.6;
-        }
+  html { scroll-behavior: smooth; }
 
-        /* TIPOGRAFÍA HEADER */
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-        }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
 
-        header {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: linear-gradient(to bottom, var(--ink2), var(--ink));
-            border-bottom: 1px solid var(--border);
-        }
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
 
-        header h1 {
-            color: var(--gold);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(201,168,76,0.04) 39px,
+      rgba(201,168,76,0.04) 40px
+    );
+    pointer-events: none;
+  }
 
-        header p {
-            color: var(--cream-dim);
-            max-width: 600px;
-            margin: 0 auto;
-            font-weight: 300;
-        }
+  .flag-stripe {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.8s ease;
+  }
+  .flag-stripe.visible { opacity: 1; transform: none; }
+  .stripe {
+    width: 4px;
+    height: 48px;
+    border-radius: 2px;
+  }
+  .stripe-green { background: var(--green-mx); }
+  .stripe-white { background: rgba(245,240,232,0.5); }
+  .stripe-red   { background: var(--red-mx); }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transition: all 0.8s ease 0.2s;
+    transform: translateY(10px);
+  }
+  .hero-label.visible { opacity: 1; transform: none; }
 
-        /* SECCIÓN DE ESTADÍSTICAS CORREGIDAS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: -3rem auto 3rem auto;
-            position: relative;
-            z-index: 10;
-        }
+  h1.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--cream);
+    max-width: 900px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease 0.4s;
+  }
+  h1.hero-title.visible { opacity: 1; transform: none; }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
 
-        .stat-box {
-            background-color: var(--ink3);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--cream-dim);
+    max-width: 560px;
+    opacity: 0;
+    transition: all 0.8s ease 0.7s;
+    transform: translateY(10px);
+  }
+  .hero-sub.visible { opacity: 1; transform: none; }
 
-        .stat-number {
-            display: block;
-            font-family: 'DM Mono', monospace;
-            font-size: 2.5rem;
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-        }
+  .scroll-cue {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: all 0.8s ease 1s;
+  }
+  .scroll-cue.visible { opacity: 1; }
+  .scroll-cue span {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: var(--gold-dim);
+    position: relative;
+    animation: pulse-down 2s infinite;
+  }
+  @keyframes pulse-down {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
 
-        .stat-label {
-            color: var(--cream-dim);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+  /* ── SECTIONS ── */
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 7rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
 
-        /* FILTROS Y BÚSQUEDA */
-        .filters-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            background-color: var(--ink2);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-number::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
 
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
+  h2.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+  h2.section-title em { color: var(--gold); font-style: italic; }
 
-        .filter-group input, .filter-group select {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: var(--ink);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            border-radius: 4px;
-            outline: none;
-        }
+  .section-body {
+    font-size: 1.05rem;
+    color: var(--cream-dim);
+    max-width: 640px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
 
-        .filter-group input:focus, .filter-group select:focus {
-            border-color: var(--gold);
-        }
+  /* ── REVEAL ANIMATION ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
 
-        /* GRID DE CANDIDATOS */
-        #candidates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
+  /* ── STAT COUNTERS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .stat-box {
+    background: var(--ink2);
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.4rem;
+    display: block;
+    font-family: 'DM Mono', monospace;
+  }
 
-        .candidate-card {
-            background-color: var(--ink2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
+  /* ── BAR CHARTS (CSS) ── */
+  .bar-chart { margin: 2rem 0; }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 60px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .bar-label {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    text-align: right;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    height: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bar-value {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-align: right;
+  }
 
-        .candidate-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-            box-shadow: 0 10px 20px rgba(201, 168, 76, 0.1);
-        }
+  /* ── GENDER SPLIT ── */
+  .gender-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+  .gender-card {
+    background: var(--ink2);
+    padding: 2rem;
+  }
+  .gender-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+  .gender-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .gender-n {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .gender-name {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-family: 'DM Mono', monospace;
+  }
 
-        .view-more-btn {
-            margin-top: auto;
-            background: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 0.6rem 1rem;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    border-left: 3px solid var(--gold);
+    padding: 1.5rem 2rem;
+    background: rgba(201,168,76,0.06);
+    margin: 2.5rem 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+  .highlight-box strong {
+    font-style: normal;
+    color: var(--gold);
+    font-weight: 700;
+  }
 
-        .view-more-btn:hover {
-            background: var(--gold);
-            color: var(--ink);
-        }
+  /* ── PODER CHART ── */
+  .poder-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
 
-        /* PAGINACIÓN */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 4rem;
-        }
+  /* ── QUOTE CARDS ── */
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  .quote-card {
+    background: var(--ink2);
+    padding: 1.75rem;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .quote-card:hover { background: var(--ink3); }
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--gold-dim);
+    line-height: 0.6;
+    margin-bottom: 1rem;
+    display: block;
+    opacity: 0.5;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .quote-author {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .quote-role {
+    font-size: 0.7rem;
+    color: var(--gold-dim);
+    font-family: 'DM Mono', monospace;
+    margin-top: 2px;
+  }
+  .quote-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+  .badge-f { background: rgba(196,30,34,0.15); color: #f07073; }
+  .badge-m { background: rgba(0,104,71,0.15); color: #5cc49a; }
+  .badge-ej { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .badge-jud { background: rgba(100,100,200,0.15); color: #a0a0f0; }
+  .badge-leg { background: rgba(200,100,100,0.15); color: #f0a0a0; }
 
-        .pagination button {
-            background-color: var(--ink3);
-            color: var(--text);
-            border: 1px solid var(--border);
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+  /* ── EXPLORER ── */
+  #explorer { padding-top: 5rem; border-bottom: none; }
 
-        .pagination button:hover:not(:disabled) {
-            background-color: var(--gold);
-            color: var(--ink);
-        }
+  .explorer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+  .explorer-controls select, .explorer-controls input {
+    background: var(--ink2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .explorer-controls select:focus,
+  .explorer-controls input:focus {
+    border-color: var(--gold);
+  }
+  .explorer-controls input { flex: 1; min-width: 200px; }
 
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+  .candidates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .candidate-card {
+    background: var(--ink2);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .candidate-card:hover { background: var(--ink3); }
+  .candidate-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 4px;
+    text-transform: capitalize;
+  }
+  .candidate-role-tag {
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .candidate-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .meta-pill {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+  .candidate-motivo {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
-        /* MODAL (TU CÓDIGO ORIGINAL) */
-        #modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 11, 15, 0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .page-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--cream-dim);
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .page-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .page-btn:disabled { opacity: 0.3; cursor: default; }
 
-        #modal-overlay.open {
-            display: flex;
-        }
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--ink2);
+    border: 1px solid var(--border);
+    max-width: 680px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 2.5rem;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  .modal-close:hover { color: var(--cream); }
+  .modal-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--cream);
+    text-transform: capitalize;
+    margin-bottom: 4px;
+  }
+  .modal-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .modal-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 1.5rem 0 0.6rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.2rem;
+  }
+  .modal-text {
+    font-size: 0.9rem;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
 
-        .modal-content {
-            background: var(--ink2);
-            border: 1px solid var(--border);
-            padding: 3rem;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    line-height: 2;
+  }
+  footer strong { color: var(--gold-dim); font-weight: 400; }
 
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            font-size: 1.5rem;
-            color: var(--gold);
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-    </style>
+  /* ── CANVAS WRAPPER ── */
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .quotes-grid, .candidates-grid, .gender-split { grid-template-columns: 1fr; }
+    .bar-row { grid-template-columns: 140px 1fr 50px; }
+  }
+
+  /* ── DATA SCIENCE UI UPGRADES ── */
+  .pillar-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  .score-badge {
+    color: #5cc49a;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-left: 8px;
+    font-weight: 400;
+  }
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>Elecciones Judiciales 2025</h1>
-        <p>Buscador Semántico impulsado por IA para analizar las propuestas y ensayos de los candidatos.</p>
-    </header>
+<section id="hero" style="max-width:100%; padding: 4rem 2rem;">
+  <div class="flag-stripe" id="flag">
+    <div class="stripe stripe-green"></div>
+    <div class="stripe stripe-white"></div>
+    <div class="stripe stripe-red"></div>
+  </div>
+  <div class="hero-label" id="hero-label">México · Junio 2025 · Datos Abiertos</div>
+  <h1 class="hero-title" id="hero-title">
+    3,414 personas<br>levantaron la <em>mano</em>
+  </h1>
+  <p class="hero-sub" id="hero-sub">
+    Por primera vez en la historia, México votó por sus jueces. Esto es lo que sabemos de quiénes se postularon.
+  </p>
+  <div class="scroll-cue" id="scroll-cue">
+    <div class="scroll-arrow"></div>
+    <span>Desplázate para explorar</span>
+  </div>
+</section>
 
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span class="stat-number">3369</span>
-                <span class="stat-label">Candidatos Publicados</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">881</span>
-                <span class="stat-label">Cargos a Elegir</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">33</span>
-                <span class="stat-label">Entidades representadas</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">64</span>
-                <span class="stat-label">Candidatos a la SCJN</span>
-            </div>
-        </div>
+<section>
+  <div class="section-number reveal">01 — El evento</div>
+  <h2 class="section-title reveal reveal-delay-1">Un momento <em>histórico</em></h2>
+  <p class="section-body reveal reveal-delay-2">
+    Las elecciones judiciales del 1 de junio de 2025 marcaron una ruptura sin precedente: México se convirtió en el primer país del mundo en elegir por voto popular a los integrantes de su Suprema Corte, Tribunales de Circuito y Juzgados de Distrito.
+    <br><br>
+    El Instituto Nacional Electoral (INE) publicó el padrón completo de candidatos. Son <strong>3,414 perfiles</strong> —con trayectorias, visiones y propuestas— disponibles como datos abiertos.
+  </p>
 
-        <div class="filters-section">
-            <div class="filter-group" style="flex: 2;">
-                <input type="text" id="search-input" placeholder="Búsqueda semántica (ej. justicia social, derechos humanos)...">
-            </div>
-            <div class="filter-group">
-                <select id="filter-cargo">
-                    <option value="">Todos los cargos</option>
-                    <option value="Magistrada">Magistrado/a</option>
-                    <option value="Jueza">Juez/a</option>
-                    <option value="Ministra">Ministro/a</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <select id="filter-sexo">
-                    <option value="">Cualquier género</option>
-                    <option value="Mujer">Mujer</option>
-                    <option value="Hombre">Hombre</option>
-                </select>
-            </div>
-        </div>
-
-        <div id="candidates-grid">
-            </div>
-
-        <div class="pagination">
-            <button id="prev-btn" disabled>Anterior</button>
-            <span id="page-info" style="color: var(--muted); font-family: 'DM Mono', monospace;">Página 1</span>
-            <button id="next-btn">Siguiente</button>
-        </div>
+  <div class="stats-grid reveal reveal-delay-3">
+    <div class="stat-box">
+      <span class="stat-number" data-target="3369">0</span>
+      <span class="stat-label">Candidatos publicados</span>
     </div>
-
-    <div id="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" id="modal-close">✖</button>
-            <span id="modal-pillar" style="color:var(--gold); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;"></span>
-            <h2 id="modal-name" style="margin: 0.5rem 0; color: var(--text);"></h2>
-            <p id="modal-role" style="color: var(--gold-dim); margin-bottom: 1.5rem; font-style: italic;"></p>
-            <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
-                <h3 style="font-family: 'DM Sans', sans-serif; font-size: 1rem; margin-bottom: 0.5rem; color: var(--cream);">Ensayo / Visión</h3>
-                <p id="modal-vision" style="color: var(--muted); font-size: 0.95rem; white-space: pre-wrap;"></p>
-            </div>
-        </div>
+    <div class="stat-box">
+      <span class="stat-number" data-target="881">0</span>
+      <span class="stat-label">Cargos a elegir</span>
     </div>
+    <div class="stat-box">
+      <span class="stat-number" data-target="33">0</span>
+      <span class="stat-label">Entidades representadas</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-number" data-target="64">0</span>
+      <span class="stat-label">Candidatos a la SCJN</span>
+    </div>
+  </div>
 
-    <script>
-        let allCandidates = [];
-        let filteredCandidates = [];
-        let currentPage = 1;
-        const itemsPerPage = 8; 
+  <div class="highlight-box reveal">
+    "<strong>Por primera vez</strong> en la historia del Poder Judicial en México, ciudadanos —no el Senado, no el Ejecutivo— decidieron quiénes impartirían justicia."
+  </div>
+</section>
 
-        // 1. CARGAR DATOS
-        async function loadData() {
-            try {
-                const response = await fetch('candidates_data.json');
-                const data = await response.json();
-                
-                allCandidates = data.candidates;
-                filteredCandidates = [...allCandidates];
-                
-                renderCandidates();
-            } catch (error) {
-                console.error("Error cargando NLP:", error);
-                document.getElementById('candidates-grid').innerHTML = '<p style="color:var(--red-mx); grid-column:1/-1;">Error al cargar datos. Asegúrate de compilar el Python.</p>';
-            }
-        }
+<section>
+  <div class="section-number reveal">02 — Las personas</div>
+  <h2 class="section-title reveal reveal-delay-1">¿Quiénes son <em>ellas y ellos</em>?</h2>
+  <p class="section-body reveal reveal-delay-2">
+    El campo está dominado por hombres, aunque con matices relevantes. En el cargo más alto —Ministra/o de la Suprema Corte— la paridad es casi exacta: 32 mujeres frente a 31 hombres.
+  </p>
 
-        // 2. FILTRADO Y BÚSQUEDA SEMÁNTICA
-        function applyFilters() {
-            const search = document.getElementById('search-input').value.toLowerCase();
-            const cargo = document.getElementById('filter-cargo').value.toLowerCase();
-            const sexo = document.getElementById('filter-sexo').value;
+  <div class="gender-split reveal reveal-delay-3">
+    <div class="gender-card">
+      <div class="gender-name" style="color: #5cc49a;">Mujeres</div>
+      <div class="gender-pct" style="color: #5cc49a;">42.5%</div>
+      <div class="gender-n">1,432 candidatas</div>
+    </div>
+    <div class="gender-card">
+      <div class="gender-name" style="color: var(--gold);">Hombres</div>
+      <div class="gender-pct" style="color: var(--gold);">57.5%</div>
+      <div class="gender-n">1,937 candidatos</div>
+    </div>
+  </div>
 
-            filteredCandidates = allCandidates.filter(c => {
-                const matchSearch = search === '' || `${c.name} ${c.vision} ${c.propuesta} ${c.pillar}`.toLowerCase().includes(search);
-                const matchCargo = cargo === '' || (c.role && c.role.toLowerCase().includes(cargo));
-                const matchSexo = sexo === '' || (c.gender && c.gender === sexo);
-                return matchSearch && matchCargo && matchSexo;
-            });
+  <p class="section-body reveal" style="margin-top: 2rem;">
+    Mujeres por cargo judicial:
+  </p>
 
-            currentPage = 1;
-            renderCandidates();
-        }
+  <div class="bar-chart reveal">
+    <div class="bar-row">
+      <div class="bar-label">SCJN</div>
+      <div class="bar-track"><div class="bar-fill" style="background: #5cc49a;" data-pct="50.8"></div></div>
+      <div class="bar-value">50.8%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Disciplina Judicial</div>
+      <div class="bar-track"><div class="bar-fill" style="background: #5cc49a;" data-pct="52.6"></div></div>
+      <div class="bar-value">52.6%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Salas Regionales TEPJF</div>
+      <div class="bar-track"><div class="bar-fill" style="background: #5cc49a;" data-pct="56.3"></div></div>
+      <div class="bar-value">56.3%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Sala Superior TEPJF</div>
+      <div class="bar-track"><div class="bar-fill" style="background: #5cc49a;" data-pct="40.0"></div></div>
+      <div class="bar-value">40.0%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Tribunales Colegiados</div>
+      <div class="bar-track"><div class="bar-fill" style="background: #5cc49a;" data-pct="41.7"></div></div>
+      <div class="bar-value">41.7%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Juezas/es de Distrito</div>
+      <div class="bar-track"><div class="bar-fill" style="background: #5cc49a;" data-pct="41.9"></div></div>
+      <div class="bar-value">41.9%</div>
+    </div>
+  </div>
 
-        // 3. RENDERIZAR GRID (Diseño Gold & Ink)
-        function renderCandidates() {
-            const grid = document.getElementById('candidates-grid');
-            grid.innerHTML = '';
+  <p class="section-body reveal" style="margin-top: 3rem;">
+    Escolaridad de los candidatos:
+  </p>
 
-            if (filteredCandidates.length === 0) {
-                grid.innerHTML = '<p style="color: var(--muted); grid-column: 1/-1; text-align:center;">No se encontraron candidatos afines a esta búsqueda semántica.</p>';
-                document.getElementById('page-info').textContent = "Página 0 de 0";
-                return;
-            }
+  <div class="bar-chart reveal">
+    <div class="bar-row">
+      <div class="bar-label">Maestría</div>
+      <div class="bar-track"><div class="bar-fill" style="background: var(--gold);" data-pct="54.8"></div></div>
+      <div class="bar-value">1,847</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Doctorado</div>
+      <div class="bar-track"><div class="bar-fill" style="background: var(--gold);" data-pct="21.9"></div></div>
+      <div class="bar-value">738</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Licenciatura</div>
+      <div class="bar-track"><div class="bar-fill" style="background: var(--gold);" data-pct="15.8"></div></div>
+      <div class="bar-value">531</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Especialidad</div>
+      <div class="bar-track"><div class="bar-fill" style="background: var(--gold);" data-pct="6.6"></div></div>
+      <div class="bar-value">223</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Postdoctorado</div>
+      <div class="bar-track"><div class="bar-fill" style="background: var(--gold);" data-pct="0.9"></div></div>
+      <div class="bar-value">30</div>
+    </div>
+  </div>
+</section>
 
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageItems = filteredCandidates.slice(startIndex, endIndex);
+<section>
+  <div class="section-number reveal">03 — El origen</div>
+  <h2 class="section-title reveal reveal-delay-1">¿Quién los <em>postula</em>?</h2>
+  <p class="section-body reveal reveal-delay-2">
+    Una de las características más polémicas de la reforma fue que los tres poderes del Estado —Ejecutivo, Legislativo y Judicial— pudieron nominar candidatos. El resultado: listas paralelas de candidatos con distintas lealtades institucionales.
+  </p>
 
-            pageItems.forEach(c => {
-                const card = document.createElement('div');
-                card.className = 'candidate-card';
-                
-                const shortVision = c.vision ? c.vision.substring(0, 120) + '...' : 'Sin ensayo registrado.';
+  <div class="poder-legend reveal">
+    <span><span class="legend-dot" style="background:#C9A84C;"></span>Ejecutivo — 987</span>
+    <span><span class="legend-dot" style="background:#e07070;"></span>Legislativo — 948</span>
+    <span><span class="legend-dot" style="background:#7090d0;"></span>Judicial — 580</span>
+    <span><span class="legend-dot" style="background:#70c090;"></span>En funciones — 279</span>
+    <span><span class="legend-dot" style="background:#a0a0a0;"></span>Múltiples — 575</span>
+  </div>
 
-                card.innerHTML = `
-                    <span style="font-size:0.75rem; text-transform:uppercase; color:var(--gold); letter-spacing:1px; margin-bottom:0.5rem; display:block;">
-                        ⚖️ ${c.pillar} | Score: ${c.score}
-                    </span>
-                    <h3 style="color: var(--text); margin-bottom: 0.2rem;">${c.name}</h3>
-                    <p style="color: var(--gold-dim); font-size: 0.9rem; margin-bottom: 1rem;">${c.role}</p>
-                    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">${shortVision}</p>
-                    <button class="view-more-btn" onclick='openModal(${JSON.stringify(c).replace(/'/g, "&apos;")})'>Ver Perfil Completo</button>
-                `;
-                grid.appendChild(card);
-            });
+  <div class="chart-wrap reveal" style="height: 280px;">
+    <canvas id="poderChart"></canvas>
+  </div>
 
-            // Actualizar Paginación
-            const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
-            document.getElementById('page-info').textContent = `Página ${currentPage} de ${totalPages}`;
-            document.getElementById('prev-btn').disabled = currentPage === 1;
-            document.getElementById('next-btn').disabled = currentPage >= totalPages;
-        }
+  <div class="highlight-box reveal" style="margin-top: 3rem;">
+    De los 64 candidatos a la <strong>Suprema Corte</strong>, el Ejecutivo postuló a la mayoría individual. Sin embargo, <strong>77 candidatos en total</strong> fueron avalados simultáneamente por los tres poderes —una rareza que señala un perfil de consenso transversal.
+  </div>
+</section>
 
-        // 4. LÓGICA DEL MODAL
-        function openModal(candidato) {
-            document.getElementById('modal-name').textContent = candidato.name;
-            document.getElementById('modal-role').textContent = candidato.role;
-            document.getElementById('modal-pillar').textContent = `Pilar de IA: ${candidato.pillar}`;
-            document.getElementById('modal-vision').textContent = candidato.vision || "No proporcionó ensayo.";
-            document.getElementById('modal-overlay').classList.add('open');
-        }
+<section>
+  <div class="section-number reveal">04 — Sus palabras</div>
+  <h2 class="section-title reveal reveal-delay-1">En sus <em>propias palabras</em></h2>
+  <p class="section-body reveal reveal-delay-2">
+    Cada candidato escribió por qué quiere el cargo, su visión de la justicia y tres propuestas concretas. En sus textos emergen patrones: independencia judicial, acceso a la justicia, lenguaje claro, derechos humanos.
+  </p>
 
-        document.getElementById('modal-close').addEventListener('click', () => {
-            document.getElementById('modal-overlay').classList.remove('open');
-        });
-        document.getElementById('modal-overlay').addEventListener('click', e => {
-            if (e.target === document.getElementById('modal-overlay')) {
-                document.getElementById('modal-overlay').classList.remove('open');
-            }
-        });
+  <div class="quotes-grid reveal">
+    <div class="quote-card">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">Porque creo que a través de este espacio puedo incidir en que la justicia llegue a todas y todos los mexicanos por igual.</p>
+      <div class="quote-author">Aguirre Bonilla, Olivia</div>
+      <div class="quote-role">Candidata a Ministra · SCJN</div>
+      <span class="quote-badge badge-f">Mujer</span>
+      <span class="quote-badge badge-jud">Poder Judicial</span>
+    </div>
+    <div class="quote-card">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">Para servir al pueblo. El servicio público debe solucionar los problemas que impiden el ejercicio de derechos.</p>
+      <div class="quote-author">Batres Guadarrama, Lenia</div>
+      <div class="quote-role">Candidata a Ministra · SCJN</div>
+      <span class="quote-badge badge-f">Mujer</span>
+      <span class="quote-badge badge-ej">En funciones</span>
+    </div>
+    <div class="quote-card">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">Visualizo una nueva justicia en México. El derecho debe ser una herramienta para proteger, no para excluir. Para cerrar brechas, no para ampliarlas.</p>
+      <div class="quote-author">Cruz Alcalá, Selene</div>
+      <div class="quote-role">Candidata a Ministra · SCJN</div>
+      <span class="quote-badge badge-f">Mujer</span>
+      <span class="quote-badge badge-ej">Ejecutivo Federal</span>
+    </div>
+    <div class="quote-card">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">La justicia debe estar al alcance de todas las personas, no detrás de escritorios o papeleo interminable. Una justicia de barandilla: accesible, sin intermediarios.</p>
+      <div class="quote-author">Escudero Mendoza, Silvia</div>
+      <div class="quote-role">Candidata a Ministra · SCJN</div>
+      <span class="quote-badge badge-f">Mujer</span>
+      <span class="quote-badge badge-ej">Ejecutivo Federal</span>
+    </div>
+  </div>
+</section>
 
-        // 5. EVENT LISTENERS
-        ['search-input','filter-cargo','filter-sexo'].forEach(id => {
-            document.getElementById(id).addEventListener('input', applyFilters);
-            document.getElementById(id).addEventListener('change', applyFilters);
-        });
+<section id="explorer">
+  <div class="section-number reveal">05 — Explora y Haz Match</div>
+  <h2 class="section-title reveal reveal-delay-1">Conoce a los <em>candidatos</em></h2>
+  <p class="section-body reveal reveal-delay-2">
+    Busca por nombre, o ingresa palabras clave (ej: "derechos humanos", "tecnología") para hacer <strong>match</strong> con la visión de los candidatos.
+  </p>
 
-        document.getElementById('prev-btn').addEventListener('click', () => { 
-            if(currentPage > 1) { currentPage--; renderCandidates(); window.scrollTo(0, 300); }
-        });
-        document.getElementById('next-btn').addEventListener('click', () => { 
-            const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
-            if(currentPage < totalPages) { currentPage++; renderCandidates(); window.scrollTo(0, 300); }
-        });
+  <div class="explorer-controls reveal">
+    <input type="text" id="search-input" placeholder="Buscar por nombre o visión (ej. 'justicia social')...">
+    <select id="filter-cargo">
+      <option value="">Todos los cargos</option>
+      <option value="Ministra/o Suprema Corte">SCJN — Ministra/o</option>
+      <option value="Magistratura Tribunal de Disciplina">Disciplina Judicial</option>
+      <option value="Magistraturas de Tribunales Colegiados">Tribunales Colegiados</option>
+      <option value="Juezas/es de Distrito">Juezas/es de Distrito</option>
+      <option value="Magistratura Salas Regionales">Salas Regionales TEPJF</option>
+      <option value="Magistratura Sala Superior">Sala Superior TEPJF</option>
+    </select>
+    <select id="filter-sexo">
+      <option value="">Todos los géneros</option>
+      <option value="MUJER">Mujeres</option>
+      <option value="HOMBRE">Hombres</option>
+    </select>
+    <select id="filter-estado">
+      <option value="">Todos los estados</option>
+    </select>
+  </div>
 
-        // INICIAR
-        loadData();
-    </script>
+  <div id="results-count" style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:1rem;">
+    Conectando a la base de datos...
+  </div>
+
+  <div class="candidates-grid" id="candidates-grid"></div>
+
+  <div class="pagination" id="pagination">
+    <button class="page-btn" id="prev-btn">← Anterior</button>
+    <span id="page-info">Página 1</span>
+    <button class="page-btn" id="next-btn">Siguiente →</button>
+  </div>
+</section>
+
+<footer>
+  <strong>Fuente de datos:</strong> Instituto Nacional Electoral (INE) · Elecciones al Poder Judicial de la Federación 2025<br>
+  Datos procesados con Machine Learning (LDA) para extracción de visiones.<br>
+  Visualización elaborada con fines de portafolio académico.
+</footer>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── DATA SCIENCE FETCH ENGINE ──
+let ALL_CANDIDATES = [];
+let filteredCandidates = [];
+let currentPage = 1;
+const PER_PAGE = 8; // Increased to 8 to show more
+
+async function loadRealData() {
+  try {
+    const res = await fetch('candidates_data.json');
+    if(!res.ok) throw new Error("File not found");
+    const data = await res.json();
+    ALL_CANDIDATES = data.candidates;
+    filteredCandidates = [...ALL_CANDIDATES];
+    
+    // Setup States dropdown automatically from JSON
+    const stateSelect = document.getElementById('filter-estado');
+    const states = [...new Set(ALL_CANDIDATES.map(c => c.state))].sort();
+    states.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s; opt.textContent = toTitleCase(s);
+      stateSelect.appendChild(opt);
+    });
+
+    renderCandidates();
+  } catch (e) {
+    console.error(e);
+    document.getElementById('results-count').innerHTML = "<strong style='color:var(--red-mx)'>⚠️ Error: Para ver los datos reales, asegúrate de subir `candidates_data.json` a tu repo de GitHub junto a este archivo.</strong>";
+  }
+}
+
+// ── HERO ANIMATIONS ──
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('flag').classList.add('visible'), 100);
+  setTimeout(() => document.getElementById('hero-label').classList.add('visible'), 300);
+  setTimeout(() => document.getElementById('hero-title').classList.add('visible'), 500);
+  setTimeout(() => document.getElementById('hero-sub').classList.add('visible'), 800);
+  setTimeout(() => document.getElementById('scroll-cue').classList.add('visible'), 1200);
+});
+
+// ── INTERSECTION OBSERVER ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      if (entry.target.querySelectorAll('[data-target]').length) animateCounters(entry.target);
+      if (entry.target.querySelectorAll('.bar-fill').length) animateBars(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('.stats-grid').forEach(el => observer.observe(el));
+document.querySelectorAll('.bar-chart').forEach(el => observer.observe(el));
+
+function animateCounters(container) {
+  container.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 1800;
+    const start = performance.now();
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target).toLocaleString('es-MX');
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+function animateBars(container) {
+  container.querySelectorAll('.bar-fill').forEach(bar => {
+    const pct = parseFloat(bar.dataset.pct);
+    setTimeout(() => { bar.style.width = pct + '%'; }, 200);
+  });
+}
+
+// ── PODER CHART ──
+const poderCtx = document.getElementById('poderChart');
+if (poderCtx) {
+  new Chart(poderCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Ejecutivo', 'Legislativo', 'Judicial', 'Múltiple', 'En Funciones'],
+      datasets: [{
+        data: [987, 948, 580, 575, 279],
+        backgroundColor: ['#C9A84C','#e07070','#7090d0','#a0a0a0','#70c090'],
+        borderRadius: 2,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.raw.toLocaleString('es-MX') + ' candidatos' } }},
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7a7870', font: { family: 'DM Mono', size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7a7870', font: { family: 'DM Mono', size: 11 } } }
+      }
+    }
+  });
+}
+
+// ── UI HELPERS ──
+function toTitleCase(str) { return str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); }
+function roleShort(role) {
+  if(!role) return '';
+  if (role.includes('Suprema Corte')) return 'SCJN';
+  if (role.includes('Colegiados')) return 'Trib. Colegiado';
+  if (role.includes('Distrito')) return 'Juzgado Distrito';
+  if (role.includes('Disciplina')) return 'Disciplina Judicial';
+  if (role.includes('Sala Superior')) return 'Sala Superior TEPJF';
+  if (role.includes('Salas Regionales')) return 'Sala Regional TEPJF';
+  return role.substring(0, 28);
+}
+function powerShort(p) {
+  if (!p) return '';
+  if (p === 'Poder Ejecutivo Federal') return 'Ejecutivo';
+  if (p === 'Poder Legislativo Federal') return 'Legislativo';
+  if (p === 'Poder Judicial de la Federación') return 'Judicial';
+  if (p === 'En Funciones') return 'En Funciones';
+  if (p.includes(',')) return 'Múltiple';
+  return p.substring(0, 20);
+}
+
+// ── RENDER ENGINE ──
+function renderCandidates() {
+  const grid = document.getElementById('candidates-grid');
+  const start = (currentPage - 1) * PER_PAGE;
+  const slice = filteredCandidates.slice(start, start + PER_PAGE);
+  const totalPages = Math.ceil(filteredCandidates.length / PER_PAGE);
+
+  document.getElementById('results-count').textContent = `Mostrando ${filteredCandidates.length.toLocaleString('es-MX')} candidatos procesados con ML`;
+  document.getElementById('page-info').textContent = `Página ${currentPage} de ${totalPages || 1}`;
+  document.getElementById('prev-btn').disabled = currentPage <= 1;
+  document.getElementById('next-btn').disabled = currentPage >= totalPages;
+
+  grid.innerHTML = '';
+  if (slice.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:var(--muted);font-family:DM Mono,monospace;font-size:0.8rem;">Sin resultados para esta búsqueda</div>';
+    return;
+  }
+
+  slice.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'candidate-card';
+    
+    // Using the generated AI Pillars and Credential Scores!
+    card.innerHTML = `
+      ${c.pillar ? `<div class="pillar-tag">${c.pillar}</div>` : ''}
+      <div class="candidate-name">${toTitleCase(c.name)} <span class="score-badge">★ ${c.score || '0'}</span></div>
+      <div class="candidate-role-tag">${roleShort(c.role)}</div>
+      <div class="candidate-meta">
+        <span class="meta-pill">${c.state === 'NACIONAL' ? 'Nacional' : toTitleCase(c.state)}</span>
+        <span class="meta-pill">${c.education}</span>
+        <span class="meta-pill" style="color:${c.gender==='MUJER'?'#5cc49a':'var(--gold)'};">${c.gender === 'MUJER' ? 'Mujer' : 'Hombre'}</span>
+        <span class="meta-pill">${powerShort(c.power)}</span>
+      </div>
+      <p class="candidate-motivo">${c.motivo || 'Sin declaración proporcionada.'}</p>
+    `;
+    card.addEventListener('click', () => openModal(c));
+    grid.appendChild(card);
+  });
+}
+
+// ── MODAL ──
+function openModal(c) {
+  const content = document.getElementById('modal-content');
+  content.innerHTML = `
+    <div class="modal-name">${toTitleCase(c.name)}</div>
+    <div class="modal-role">${c.role}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;">
+      <span class="meta-pill">${c.state === 'NACIONAL' ? 'Nacional' : toTitleCase(c.state)}</span>
+      <span class="meta-pill">${c.education}</span>
+      <span class="meta-pill" style="color:${c.gender==='MUJER'?'#5cc49a':'var(--gold)'};">${c.gender === 'MUJER' ? 'Mujer' : 'Hombre'}</span>
+      <span class="meta-pill">${c.power}</span>
+    </div>
+    ${c.motivo ? `<div class="modal-section-title">Por qué quiero el cargo</div><p class="modal-text">${c.motivo}</p>` : ''}
+    ${c.vision ? `<div class="modal-section-title">Visión de la justicia</div><p class="modal-text">${c.vision}</p>` : ''}
+    ${c.propuesta ? `<div class="modal-section-title">Propuesta principal</div><p class="modal-text">${c.propuesta}</p>` : ''}
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+document.getElementById('modal-close').addEventListener('click', () => { document.getElementById('modal-overlay').classList.remove('open'); });
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('open'); });
+
+// ── UPGRADED SEMANTIC FILTER ──
+function applyFilters() {
+  const search = document.getElementById('search-input').value.toLowerCase();
+  const cargo = document.getElementById('filter-cargo').value.toLowerCase();
+  const sexo = document.getElementById('filter-sexo').value;
+  const estado = document.getElementById('filter-estado').value;
+
+  filteredCandidates = ALL_CANDIDATES.filter(c => {
+    // Searches their name AND their AI-processed text statements
+    const searchPool = `${c.name} ${c.motivo} ${c.vision} ${c.propuesta} ${c.pillar}`.toLowerCase();
+    
+    if (search && !searchPool.includes(search)) return false;
+    if (cargo && !c.role.toLowerCase().includes(cargo)) return false;
+    if (sexo && c.gender !== sexo) return false;
+    if (estado && c.state !== estado) return false;
+    return true;
+  });
+
+  currentPage = 1;
+  renderCandidates();
+}
+
+['search-input','filter-cargo','filter-sexo','filter-estado'].forEach(id => {
+  document.getElementById(id).addEventListener('input', applyFilters);
+  document.getElementById(id).addEventListener('change', applyFilters);
+});
+
+document.getElementById('prev-btn').addEventListener('click', () => { currentPage--; renderCandidates(); });
+document.getElementById('next-btn').addEventListener('click', () => { currentPage++; renderCandidates(); });
+
+loadRealData();
+</script>
 </body>
 </html>
