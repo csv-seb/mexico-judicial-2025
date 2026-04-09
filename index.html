@@ -3,127 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motor Semántico | Elecciones Judiciales 2025</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Elecciones Judiciales 2025 — Buscador Semántico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
     
     <style>
+        /* TUS VARIABLES DE COLOR ORIGINALES */
         :root {
-            --bg-color: #0F172A;
-            --surface-color: #1E293B;
-            --text-main: #F8FAFC;
-            --text-muted: #94A3B8;
-            --gold-accent: #D4AF37;
-            --border-color: #334155;
+            --gold: #C9A84C;
+            --gold-dim: #8a6f30;
+            --ink: #0b0b0f;
+            --ink2: #141418;
+            --ink3: #1e1e25;
+            --cream: #f5f0e8;
+            --cream-dim: #b8b0a0;
+            --red-mx: #c41e22;
+            --green-mx: #006847;
+            --accent: #e8d5a3;
+            --text: #e8e4dc;
+            --muted: #7a7870;
+            --border: rgba(201, 168, 76, 0.2);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--ink);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
             line-height: 1.6;
+        }
+
+        /* TIPOGRAFÍA HEADER */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
 
         header {
             text-align: center;
             padding: 4rem 2rem;
-            border-bottom: 1px solid var(--border-color);
-            background: linear-gradient(180deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%);
+            background: linear-gradient(to bottom, var(--ink2), var(--ink));
+            border-bottom: 1px solid var(--border);
         }
 
-        h1 {
+        header h1 {
+            color: var(--gold);
             font-size: 2.5rem;
-            font-weight: 800;
             margin-bottom: 1rem;
         }
 
-        h1 span {
-            color: var(--gold-accent);
-        }
-
-        .subtitle {
-            color: var(--text-muted);
+        header p {
+            color: var(--cream-dim);
             max-width: 600px;
             margin: 0 auto;
             font-weight: 300;
         }
 
-        /* SECTION: Stats */
-        .stats-container {
-            max-width: 1200px;
-            margin: -3rem auto 3rem auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .stat-box {
-            background-color: var(--surface-color);
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--gold-accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* SECTION: Search & Interface */
-        .app-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        .search-wrapper {
-            margin-bottom: 3rem;
-            display: flex;
-            gap: 1rem;
+        /* SECCIÓN DE ESTADÍSTICAS CORREGIDAS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: -3rem auto 3rem auto;
+            position: relative;
+            z-index: 10;
         }
 
-        #searchInput {
-            flex: 1;
-            padding: 1.2rem;
+        .stat-box {
+            background-color: var(--ink3);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
             border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--surface-color);
-            color: white;
-            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .stat-number {
+            display: block;
+            font-family: 'DM Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--cream-dim);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* FILTROS Y BÚSQUEDA */
+        .filters-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            background-color: var(--ink2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--ink);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            border-radius: 4px;
             outline: none;
-            transition: border-color 0.3s ease;
         }
 
-        #searchInput:focus {
-            border-color: var(--gold-accent);
+        .filter-group input:focus, .filter-group select:focus {
+            border-color: var(--gold);
         }
 
-        /* SECTION: Results Grid */
-        #resultsGrid {
+        /* GRID DE CANDIDATOS */
+        #candidates-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
@@ -131,124 +144,120 @@
         }
 
         .candidate-card {
-            background-color: var(--surface-color);
-            border-radius: 12px;
+            background-color: var(--ink2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
         .candidate-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.2);
-            border-color: var(--gold-accent);
+            border-color: var(--gold);
+            box-shadow: 0 10px 20px rgba(201, 168, 76, 0.1);
         }
 
-        .card-header {
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .card-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 0.3rem;
-        }
-
-        .card-role {
-            font-size: 0.9rem;
-            color: var(--gold-accent);
-        }
-
-        .card-body {
-            flex: 1;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .card-body strong {
-            color: var(--text-main);
-        }
-
-        .ml-pillar {
-            display: inline-block;
-            background-color: rgba(212, 175, 55, 0.1);
-            color: var(--gold-accent);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+        .view-more-btn {
+            margin-top: auto;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        .view-more-btn:hover {
+            background: var(--gold);
+            color: var(--ink);
         }
 
-        .score-badge {
-            background-color: #22C55E;
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        /* SECTION: Pagination */
+        /* PAGINACIÓN */
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 1rem;
             align-items: center;
+            gap: 1rem;
             margin-bottom: 4rem;
         }
 
-        .btn {
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
+        .pagination button {
+            background-color: var(--ink3);
+            color: var(--text);
+            border: 1px solid var(--border);
             padding: 0.8rem 1.5rem;
-            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 600;
+            transition: background 0.3s ease;
         }
 
-        .btn:hover:not(:disabled) {
-            background-color: var(--gold-accent);
-            color: #000;
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--gold);
+            color: var(--ink);
         }
 
-        .btn:disabled {
+        .pagination button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        #pageInfo {
-            color: var(--text-muted);
+        /* MODAL (TU CÓDIGO ORIGINAL) */
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 11, 15, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--ink2);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--gold);
+            cursor: pointer;
+            background: none;
+            border: none;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Buscador Semántico <span>Judicial 2025</span></h1>
-        <p class="subtitle">Descubre a los candidatos ideales basándote en la similitud de sus propuestas y visión judicial utilizando algoritmos de Procesamiento de Lenguaje Natural (NLP).</p>
+        <h1>Elecciones Judiciales 2025</h1>
+        <p>Buscador Semántico impulsado por IA para analizar las propuestas y ensayos de los candidatos.</p>
     </header>
 
-    <section class="stats-container">
+    <div class="container">
         <div class="stats-grid">
             <div class="stat-box">
-                <span class="stat-number">3,369</span>
+                <span class="stat-number">3369</span>
                 <span class="stat-label">Candidatos Publicados</span>
             </div>
             <div class="stat-box">
@@ -257,88 +266,108 @@
             </div>
             <div class="stat-box">
                 <span class="stat-number">33</span>
-                <span class="stat-label">Entidades</span>
+                <span class="stat-label">Entidades representadas</span>
             </div>
             <div class="stat-box">
                 <span class="stat-number">64</span>
-                <span class="stat-label">Candidatos SCJN</span>
+                <span class="stat-label">Candidatos a la SCJN</span>
             </div>
         </div>
-    </section>
 
-    <main class="app-container">
-        <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="Ej. 'derechos humanos', 'justicia social', 'tecnología'...">
+        <div class="filters-section">
+            <div class="filter-group" style="flex: 2;">
+                <input type="text" id="search-input" placeholder="Búsqueda semántica (ej. justicia social, derechos humanos)...">
+            </div>
+            <div class="filter-group">
+                <select id="filter-cargo">
+                    <option value="">Todos los cargos</option>
+                    <option value="Magistrada">Magistrado/a</option>
+                    <option value="Jueza">Juez/a</option>
+                    <option value="Ministra">Ministro/a</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="filter-sexo">
+                    <option value="">Cualquier género</option>
+                    <option value="Mujer">Mujer</option>
+                    <option value="Hombre">Hombre</option>
+                </select>
+            </div>
         </div>
 
-        <div id="resultsGrid">
+        <div id="candidates-grid">
             </div>
 
         <div class="pagination">
-            <button id="prevBtn" class="btn" disabled>Anterior</button>
-            <span id="pageInfo">Página 1</span>
-            <button id="nextBtn" class="btn">Siguiente</button>
+            <button id="prev-btn" disabled>Anterior</button>
+            <span id="page-info" style="color: var(--muted); font-family: 'DM Mono', monospace;">Página 1</span>
+            <button id="next-btn">Siguiente</button>
         </div>
-    </main>
+    </div>
+
+    <div id="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">✖</button>
+            <span id="modal-pillar" style="color:var(--gold); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;"></span>
+            <h2 id="modal-name" style="margin: 0.5rem 0; color: var(--text);"></h2>
+            <p id="modal-role" style="color: var(--gold-dim); margin-bottom: 1.5rem; font-style: italic;"></p>
+            <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <h3 style="font-family: 'DM Sans', sans-serif; font-size: 1rem; margin-bottom: 0.5rem; color: var(--cream);">Ensayo / Visión</h3>
+                <p id="modal-vision" style="color: var(--muted); font-size: 0.95rem; white-space: pre-wrap;"></p>
+            </div>
+        </div>
+    </div>
 
     <script>
         let allCandidates = [];
         let filteredCandidates = [];
-        const itemsPerPage = 8; // Configurado a 8 como dice en el README
         let currentPage = 1;
+        const itemsPerPage = 8; 
 
-        // Elementos del DOM
-        const grid = document.getElementById('resultsGrid');
-        const searchInput = document.getElementById('searchInput');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const pageInfo = document.getElementById('pageInfo');
-
-        // 1. Cargar los datos JSON generados por Python
+        // 1. CARGAR DATOS
         async function loadData() {
             try {
-                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Cargando modelo NLP...</p>';
                 const response = await fetch('candidates_data.json');
                 const data = await response.json();
                 
                 allCandidates = data.candidates;
-                filteredCandidates = [...allCandidates]; // Inicialmente mostrar todos
+                filteredCandidates = [...allCandidates];
                 
-                renderPage();
+                renderCandidates();
             } catch (error) {
-                console.error("Error cargando los datos:", error);
-                grid.innerHTML = '<p style="color:red; text-align:center; grid-column: 1/-1;">Error al cargar candidates_data.json. Asegúrate de ejecutar el script de Python primero.</p>';
+                console.error("Error cargando NLP:", error);
+                document.getElementById('candidates-grid').innerHTML = '<p style="color:var(--red-mx); grid-column:1/-1;">Error al cargar datos. Asegúrate de compilar el Python.</p>';
             }
         }
 
-        // 2. Motor de Búsqueda Semántica (Filtro)
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            currentPage = 1; // Resetear a la primera página al buscar
-            
-            if (term === '') {
-                filteredCandidates = [...allCandidates];
-            } else {
-                filteredCandidates = allCandidates.filter(c => {
-                    // Buscar coincidencias en múltiples campos (Simulación de búsqueda semántica)
-                    const searchString = `${c.name} ${c.vision} ${c.propuesta} ${c.pillar}`.toLowerCase();
-                    return searchString.includes(term);
-                });
-            }
-            renderPage();
-        });
+        // 2. FILTRADO Y BÚSQUEDA SEMÁNTICA
+        function applyFilters() {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const cargo = document.getElementById('filter-cargo').value.toLowerCase();
+            const sexo = document.getElementById('filter-sexo').value;
 
-        // 3. Renderizar las Tarjetas (DOM Injection)
-        function renderPage() {
-            grid.innerHTML = ''; // Limpiar grid
+            filteredCandidates = allCandidates.filter(c => {
+                const matchSearch = search === '' || `${c.name} ${c.vision} ${c.propuesta} ${c.pillar}`.toLowerCase().includes(search);
+                const matchCargo = cargo === '' || (c.role && c.role.toLowerCase().includes(cargo));
+                const matchSexo = sexo === '' || (c.gender && c.gender === sexo);
+                return matchSearch && matchCargo && matchSexo;
+            });
+
+            currentPage = 1;
+            renderCandidates();
+        }
+
+        // 3. RENDERIZAR GRID (Diseño Gold & Ink)
+        function renderCandidates() {
+            const grid = document.getElementById('candidates-grid');
+            grid.innerHTML = '';
 
             if (filteredCandidates.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: var(--text-muted);">No se encontraron candidatos afines a tu búsqueda.</p>';
-                updatePagination();
+                grid.innerHTML = '<p style="color: var(--muted); grid-column: 1/-1; text-align:center;">No se encontraron candidatos afines a esta búsqueda semántica.</p>';
+                document.getElementById('page-info').textContent = "Página 0 de 0";
                 return;
             }
 
-            // Calcular índices de paginación
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageItems = filteredCandidates.slice(startIndex, endIndex);
@@ -347,59 +376,61 @@
                 const card = document.createElement('div');
                 card.className = 'candidate-card';
                 
-                // Truncar textos muy largos
-                const shortVision = c.vision ? (c.vision.substring(0, 100) + '...') : 'Sin visión registrada.';
+                const shortVision = c.vision ? c.vision.substring(0, 120) + '...' : 'Sin ensayo registrado.';
 
                 card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-name">${c.name}</div>
-                        <div class="card-role">${c.role}</div>
-                    </div>
-                    <span class="ml-pillar">⚖️ ${c.pillar}</span>
-                    <div class="card-body">
-                        <strong>Visión:</strong> ${shortVision}
-                    </div>
-                    <div class="card-footer">
-                        <span>📍 ${c.state || 'Nacional'}</span>
-                        <span class="score-badge">Puntaje: ${c.score}</span>
-                    </div>
+                    <span style="font-size:0.75rem; text-transform:uppercase; color:var(--gold); letter-spacing:1px; margin-bottom:0.5rem; display:block;">
+                        ⚖️ ${c.pillar} | Score: ${c.score}
+                    </span>
+                    <h3 style="color: var(--text); margin-bottom: 0.2rem;">${c.name}</h3>
+                    <p style="color: var(--gold-dim); font-size: 0.9rem; margin-bottom: 1rem;">${c.role}</p>
+                    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">${shortVision}</p>
+                    <button class="view-more-btn" onclick='openModal(${JSON.stringify(c).replace(/'/g, "&apos;")})'>Ver Perfil Completo</button>
                 `;
                 grid.appendChild(card);
             });
 
-            updatePagination();
-        }
-
-        // 4. Controles de Paginación
-        function updatePagination() {
+            // Actualizar Paginación
             const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
-            
-            pageInfo.textContent = `Página ${currentPage} de ${totalPages || 1}`;
-            
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+            document.getElementById('page-info').textContent = `Página ${currentPage} de ${totalPages}`;
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage >= totalPages;
         }
 
-        prevBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderPage();
-                window.scrollTo({ top: 300, behavior: 'smooth' });
+        // 4. LÓGICA DEL MODAL
+        function openModal(candidato) {
+            document.getElementById('modal-name').textContent = candidato.name;
+            document.getElementById('modal-role').textContent = candidato.role;
+            document.getElementById('modal-pillar').textContent = `Pilar de IA: ${candidato.pillar}`;
+            document.getElementById('modal-vision').textContent = candidato.vision || "No proporcionó ensayo.";
+            document.getElementById('modal-overlay').classList.add('open');
+        }
+
+        document.getElementById('modal-close').addEventListener('click', () => {
+            document.getElementById('modal-overlay').classList.remove('open');
+        });
+        document.getElementById('modal-overlay').addEventListener('click', e => {
+            if (e.target === document.getElementById('modal-overlay')) {
+                document.getElementById('modal-overlay').classList.remove('open');
             }
         });
 
-        nextBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderPage();
-                window.scrollTo({ top: 300, behavior: 'smooth' });
-            }
+        // 5. EVENT LISTENERS
+        ['search-input','filter-cargo','filter-sexo'].forEach(id => {
+            document.getElementById(id).addEventListener('input', applyFilters);
+            document.getElementById(id).addEventListener('change', applyFilters);
         });
 
-        // Inicializar la aplicación
+        document.getElementById('prev-btn').addEventListener('click', () => { 
+            if(currentPage > 1) { currentPage--; renderCandidates(); window.scrollTo(0, 300); }
+        });
+        document.getElementById('next-btn').addEventListener('click', () => { 
+            const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
+            if(currentPage < totalPages) { currentPage++; renderCandidates(); window.scrollTo(0, 300); }
+        });
+
+        // INICIAR
         loadData();
-
     </script>
 </body>
 </html>
